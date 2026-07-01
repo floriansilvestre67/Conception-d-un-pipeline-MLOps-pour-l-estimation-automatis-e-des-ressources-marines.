@@ -15,6 +15,7 @@ x-airflow-common: &airflow-common
     SHARED_DATA_PATH:                           /shared/data
     SHARED_MODELS_PATH:                         /shared/models
     RAW_DATA_PATH:                              /data/raw/NASC_anchois.xls
+    USE_FAKE_DATA:                              "true"   # "true" = données fictives | "false" = données réelles
   volumes:
     - ./dags:/opt/airflow/dags
     - ./pipeline:/opt/airflow/pipeline

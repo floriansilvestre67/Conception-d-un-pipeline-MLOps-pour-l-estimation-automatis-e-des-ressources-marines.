@@ -19,7 +19,16 @@ import pandas as pd
 from sklearn.preprocessing import PowerTransformer
 import joblib
 
-RAW_PATH      = os.environ.get("RAW_DATA_PATH", "/data/raw/NASC_anchois.xls")
+# ── Flag données fictives / réelles ──────────────────────────────────────────
+# Changer USE_FAKE_DATA à "true" dans docker-compose.yml pour utiliser les
+# données fictives (demo GitHub) ou "false" pour les données réelles.
+USE_FAKE_DATA = os.environ.get("USE_FAKE_DATA", "false").lower() == "true"
+
+if USE_FAKE_DATA:
+    RAW_PATH = os.path.join(os.path.dirname(os.environ.get("RAW_DATA_PATH", "/data/raw/NASC_anchois.xls")), "Fake_NASC_anchois.xls")
+    print("[preprocess] ⚠️  MODE DEMO — données fictives utilisées")
+else:
+    RAW_PATH = os.environ.get("RAW_DATA_PATH", "/data/raw/NASC_anchois.xls")
 SHARED_DATA   = os.environ.get("SHARED_DATA_PATH", "/shared/data")
 SHARED_MODELS = os.environ.get("SHARED_MODELS_PATH", "/shared/models")
 
