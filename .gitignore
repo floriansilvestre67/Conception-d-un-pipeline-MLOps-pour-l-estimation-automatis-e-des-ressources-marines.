@@ -1,0 +1,9 @@
+# Ignorer les données confidentielles
+*.xls
+*.joblib
+*.parquet
+__pycache__/
+.env
+data/
+*.csv
+*.xlsx
