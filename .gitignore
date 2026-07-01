@@ -1,9 +1,6 @@
 # Ignorer les données confidentielles
-*.xls
+data/raw/NASC_anchois.xls
 *.joblib
 *.parquet
 __pycache__/
 .env
-data/
-*.csv
-*.xlsx
