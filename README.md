@@ -65,7 +65,7 @@ La variable cible à prédire est le **coefficient de rétrodiffusion acoustique
 │ task: optimize (pipeline/optimize.py)                           │
 │ 1. Optimisation des hyperparamètres via Optuna (TPE)            │
 │ 2. Maximisation du F1-Score pour le Classifieur                 │
-│ 3. Maximisation du R² pour le Régresseur                         │
+│ 3. Maximisation du R² pour le Régresseur                        │
 │ 4. Export des configurations optimales                          │
 └─────────────────────────────────────────────────────────────────┘
                               │
@@ -74,17 +74,17 @@ La variable cible à prédire est le **coefficient de rétrodiffusion acoustique
 │             ENTRAÎNEMENT DU PIPELINE HURDLE (AIRFLOW TASKS 3&4) │
 ├─────────────────────────────────────────────────────────────────┤
 │ task: train_classifier & train_regressor (pipeline/train.py)    │
-│ Phase 1 : HistGradientBoostingClassifier (Présence/Absence)      │
+│ Phase 1 : HistGradientBoostingClassifier (Présence/Absence)     │
 │ Phase 2 : HistGradientBoostingRegressor (Quantité de biomasse)  │
 │ → Sérialisation et sauvegarde des modèles via Joblib            │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                 ÉVALUATION & EXPORT (AIRFLOW TASK 5)             │
+│                 ÉVALUATION & EXPORT (AIRFLOW TASK 5)            │
 ├─────────────────────────────────────────────────────────────────┤
 │ task: evaluate (pipeline/evaluate.py)                           │
-│ 1. Calcul des métriques finales (F1-Score, R²)       │
+│ 1. Calcul des métriques finales (F1-Score, R²)                  │
 │ 2. Calcul de l'importance des variables par permutation         │
 │ 3. Export des métriques vers un volume Docker partagé           │
 └─────────────────────────────────────────────────────────────────┘
@@ -95,13 +95,16 @@ La variable cible à prédire est le **coefficient de rétrodiffusion acoustique
 ├─────────────────────────────────────────────────────────────────┤
 │ streamlit_app/app.py (Conteneur Streamlit sur le port 8501)     │
 │ • Lecture dynamique des modèles et métriques exportés           │
-│ • Formulaire de saisie utilisateur (Modes: Simple, Avancé, perso)│
+│ • Formulaire de saisie utilisateur (Modes: Simple, Avancé, Perso)│
 │ • Visualisation Plotly (Importance des variables & Cartographie)│
 └─────────────────────────────────────────────────────────────────┘
 ```
 ---
 
 ## Approche Scientifique & Modélisation
+Pour réduire l'asymétrie de la distribution de notre varible cible Anchois_NASC nous avons appliqué dessus une transformation Yéo-Johnson (yeo_NASC)
+  - Skeewness (Anchois_NASC) = 31.9
+  - Skeewness (yeo_NASC) = 1.72
 
 Pour surmonter la problématique des 81 % de zéros (absence de poissons) , l'architecture repose sur un **Modèle Hurdle en deux phases**:
 
@@ -115,6 +118,7 @@ Après une phase intensive de comparaison de modèles (modèles linéaires, géo
 * **Régression (Quantité) :** **$R^2$ de 0,490** | RMSE de 0,356 | MAE de 0,235.
 
 >  **Variables clés identifiées :** L'analyse de l'importance par permutation montre que la présence des anchois est fortement gouvernée par le **fer dissous (Fe)** (proxy de la production primaire), tandis que la quantité de biomasse est un phénomène purement **saisonnier** (capturé par l'encodage cyclique des mois).
+
 >  **Qualité des résultats :** Cette étude porté par l'INRH est novatrice et il n'y a pas eu encore d'autre études comparatrices, il est donc difficile d'avoir un point de comparaison vis-à-vis des métriques d'évaluation des modèles
 ---
 
@@ -160,5 +164,5 @@ anchois-mlops/
 ├── streamlit_app/              # Interface de visualisation et prédiction
 ├── docker-compose.yml          # Orchestration des 5 conteneurs
 └── README.md
-
-Rq : Afin de conserver la confidentialité des données sources sur Github c'est une fichier de fausses données qui a été 
+```
+**Rq :** Afin de conserver la confidentialité des données sources sur Github c'est une fichier de fausses données qui a été push
