@@ -16,8 +16,7 @@
 ---
 ## **Video demo**
 
-<video src="https://github.com/user-attachments/assets/ecf7bdab-c388-42e0-941f-958963e7cf0d" controls width="600">
-  Your browser does not support the video tag.
+<video src="https://github.com/floriansilvestre67/Conception-d-un-pipeline-MLOps-pour-l-estimation-automatis-e-des-ressources-marines./raw/refs/heads/main/data/content_readme/demo_courte_PFA.mp4" controls width="600">
 </video>
 
 ## **Description du projet** 
